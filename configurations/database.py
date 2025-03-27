@@ -4,11 +4,11 @@ from flask_migrate import Migrate
 
 # metadata configurations for better labeling
 pre_naming = {
-    "ix": "_ix_%(column_0_label)_",
-    "uq": "_uq_%(table_name)_%(column_0_name)_",
-    "pk": "_pk_%(table_name)_",
-    "ck": "_ck_%(table_name)_%(constraint_name)_",
-    "fk": "_fk_%(table_name)_%(column_0_name)_%(referred_table_name)_"
+    "ix": "ix_%(column_0_label)s",
+    "uq": "uq_%(table_name)s_%(column_0_name)s",
+    "pk": "pk_%(table_name)s",
+    "ck": "ck_%(table_name)s_%(constraint_name)s",
+    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s"
 }
 
 # database configurations

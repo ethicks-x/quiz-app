@@ -7,7 +7,6 @@ from configurations import config
 from configurations.database import db, do_migrate
 from configurations.config import LocalDevConfig
 
-from controllers.normal import *
 
 env = dotenv_values(".env")
 app = None
@@ -20,13 +19,25 @@ def create_app():
     
     do_migrate(app)
     
-    with app.app_context():
-        db.create_all()
-
     return app
 
-
 app = create_app()
+
+import models.model
+with app.app_context():
+        db.create_all()
+
+app.secret_key = env["SECRET_KEY"]
+
+bootstrap = Bootstrap5(app)
+
+from controllers.normal import *
+
+from configurations.loginManager import *
+
+from routes import auth
+
+app.register_blueprint(auth.auth)
 
 if __name__ == '__main__':
     app.run(

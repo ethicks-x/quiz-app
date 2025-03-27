@@ -16,4 +16,4 @@ class Config():
 
 class LocalDevConfig(Config):
     SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(os.path.abspath(os.getcwd()), './database_dir/database.db')
-    DEBUG = True 
+    DEBUG = True

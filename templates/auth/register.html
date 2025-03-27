@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+  <div class="d-grid h-100" style="place-items: center">
+    <div class="w-100" style="max-width: 500px">
+      {% if errors %}
+      <div class="alert alert-danger" role="alert">
+        <ul class="m-0">
+          {% for error in errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+
+      <div class="w-100 bg-body-secondary px-5 py-4 rounded-3 shadow">
+        <h2 class="text-center">Welcome to Quiz Master</h2>
+        <h1 class="text-center">Register</h1>
+        <form action="/register" method="post">
+          <div class="mb-3">
+            <label for="username" class="form-label">Email/Username</label>
+            <input
+              type="email"
+              name="username"
+              id="username"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input
+              type="password"
+              name="password"
+              id="password"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="full_name" class="form-label">Full Name</label>
+            <input
+              type="text"
+              name="full_name"
+              id="full_name"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="qualification" class="form-label"
+              >Qualification</label
+            >
+            <input
+              type="text"
+              name="qualification"
+              id="qualification"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="dob" class="form-label">Date of Birth</label>
+            <input
+              type="date"
+              name="dob"
+              id="dob"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="d-flex">
+            <button type="submit" class="btn btn-primary col-6">
+              Register
+            </button>
+            <a href="/login" class="btn btn-link col-6">Existing user?</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
