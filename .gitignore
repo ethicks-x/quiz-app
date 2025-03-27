@@ -175,3 +175,7 @@ cython_debug/
 
 # VSCode configuration file
 .vscode
+
+# Databases
+database_dir/
+*.db

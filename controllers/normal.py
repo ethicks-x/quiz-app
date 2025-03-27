@@ -1,7 +1,7 @@
-from app import app
+# from app import app
 from flask import request, render_template, send_from_directory, redirect, url_for
 from flask_login import current_user
-# from flask import current_app as app
+from flask import current_app as app
 
 import os
 

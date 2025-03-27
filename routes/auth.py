@@ -2,7 +2,7 @@ from flask import Blueprint, redirect, render_template, request, url_for
 from flask_login import login_user, logout_user, current_user, login_required
 from flask_bcrypt import Bcrypt
 
-from app import app
+from flask import current_app as app
 from models.model import User
 from configurations.database import db
 
@@ -15,6 +15,7 @@ auth = Blueprint('auth', __name__, url_prefix='/auth')
 @auth.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
+        # Fetching data from form   
         username = request.form["username"]
         password = request.form["password"]
         full_name = request.form["full_name"]
