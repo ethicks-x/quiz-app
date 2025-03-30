@@ -67,13 +67,15 @@ def login():
             user.is_authenticated = True
             db.session.commit()
             login_user(user)
-            return redirect(url_for("home"))       
+            return redirect(url_for("home"))
+        else:
+            return render_template("auth/login.html", error="Invalid username or password!")
 
     else:
         # user authentication checked
         if current_user.is_authenticated:
             if user.role == "admin":
-                return redirect(url_for("admin.index"))
+                return redirect(url_for("admin.dashboard"))
             else:
                 return redirect(url_for("user.dashboard"))
         else:
