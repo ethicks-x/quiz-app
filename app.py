@@ -2,7 +2,7 @@ from flask import Flask, send_from_directory, redirect, url_for
 from flask_bootstrap import Bootstrap5
 from flask_login import current_user, LoginManager
 from dotenv import dotenv_values
-from models.model import User
+from models.model import User, Subject, Chapter, Quiz, Question, Score
 import os
 
 from configurations.database import db, do_migrate
@@ -35,6 +35,18 @@ def load_user(user_id):
 @user_entrance.unauthorized_handler
 def unauthorized_handler():
     return 'Unauthorized', 401
+
+# Add context processor to make models available in templates
+@app.context_processor
+def inject_models():
+    return {
+        'Subject': Subject,
+        'Chapter': Chapter,
+        'Quiz': Quiz,
+        'Question': Question,
+        'Score': Score,
+        'User': User
+    }
 
 from routes import auth, admin, user
 app.register_blueprint(user.user_bp)

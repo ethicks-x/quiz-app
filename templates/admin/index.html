@@ -2,16 +2,16 @@
 {% block title %}Admin View{% endblock %}
 {% block content %}
     <div class="my-4 px-4">
-        <!-- <div class="d-flex flex-column flex-lg-row flex-wrap gap-4"> -->
         <div class="d-grid gap-4" style="grid-template-columns: repeat(auto-fill, minmax(500px, 1fr)); grid-template-rows: masonry;">
 
-            {% if data|length == 0 %}
+            {% set all_subjects = Subject.query.all() %}
+            {% if all_subjects|length == 0 %}
                 <div class="alert alert-warning" role="alert">
                     No Subjects Found
                 </div>
             {% endif %}
 
-            {% for subject in data %}
+            {% for subject in all_subjects %}
                 <div class="width-100">
                     <div class="card shadow-sm">
                         <div class="card-body">
@@ -27,16 +27,18 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% if subject.chapters|length == 0 %}
+                                        {% set chapters = Chapter.query.filter_by(subject_id=subject.id).all() %}
+                                        {% if chapters|length == 0 %}
                                             <tr>
                                                 <td colspan="3" class="text-center">No Chapters Found</td>
                                             </tr>
                                         {% endif %}
 
-                                        {% for chapter in subject.chapters %}
+                                        {% for chapter in chapters %}
+                                            {% set quiz_count = Quiz.query.filter_by(chapter_id=chapter.id).count() %}
                                             <tr>
                                                 <td>{{ chapter.name }}</td>
-                                                <td>{{ chapter.no_of_quizzes }}</td>
+                                                <td>{{ quiz_count }}</td>
                                                 <td>
                                                     <a href="/admin/quizes/{{ chapter.id }}" class="btn btn-sm btn-outline-secondary">Edit</a>
                                                     <a href="/admin/delete-chapter/{{ chapter.id }}" class="btn btn-sm btn-outline-danger">Delete</a>
