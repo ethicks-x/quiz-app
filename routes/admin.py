@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from datetime import datetime
-import os
 from functools import wraps, reduce
 from flask_login import current_user
 from models.model import db, Subject, Chapter, Quiz, Question, Score, User
@@ -18,7 +17,7 @@ def login_admin_required(func):
 
         # Check if the user is an admin
         if not current_user.role == "admin":
-            return redirect(url_for('normal.home'))
+            return redirect(url_for('dashboard'))
 
         return func(*args, **kwargs)
     return decorated_function

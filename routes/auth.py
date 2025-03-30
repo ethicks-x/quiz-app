@@ -67,7 +67,7 @@ def login():
             user.is_authenticated = True
             db.session.commit()
             login_user(user)
-            return redirect("/user/dashboard")       
+            return redirect(url_for("home"))       
 
     else:
         # user authentication checked
