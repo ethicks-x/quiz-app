@@ -9,7 +9,7 @@ from configurations.database import db
 from datetime import datetime
 
 
-auth = Blueprint('auth', __name__, url_prefix='/auth')
+auth = Blueprint('auth', __name__)
 
 
 @auth.route("/register", methods=["GET", "POST"])
@@ -30,63 +30,60 @@ def register():
         user = db.session.query(User).filter(User.username == username).first()
         if user is None:
             # creating user query
-            new_user = User(username=username,
-                            password=pw_hash,
-                            full_name=full_name,
-                            qualification=qualification,
-                            dob=dob)
+            new_user = User(username=username, 
+                            password=pw_hash, 
+                            full_name=full_name, 
+                            qualification=qualification, 
+                            dob=dob,
+                            is_authenticated=True)
             
             # adding the user in database
             db.session.add(new_user)
             db.session.commit()
-
-            # loggin the user in
-            login_user(new_user)     
-
-            return redirect(url_for("index"))
             
+            # Log the user in
+            login_user(new_user)
+
+            return redirect("/user/dashboard")            
         else:
             return render_template("auth/register.html", error="username already exists!")
 
     else:
-        # user authentication checked
-        if current_user.is_authenticated:
-            return redirect(url_for("index"))
-        else:
-            return render_template("auth/register.html")
+        return render_template("auth/register.html")
 
 
 @auth.route('/login', methods=['GET', "POST"])
 def login():
     if request.method == "POST":
         # fetching form data
-        username = request.form("username")
-        password = request.form("password")
+        username = request.form["username"]
+        password = request.form["password"]
 
         # checking for user availiability
-        user = User.query.filter(username=username).first()
+        user = db.session.query(User).filter(User.username == username).first()
+        bcrypt = Bcrypt(app)
 
-        if user is None:
-            return render_template("auth/login.html", error="username not found!")
-        else:
-            bcrypt = Bcrypt(app)
-            if bcrypt.check_password_hash(user.password, password):
-                login_user(user)
-                # Redirection to home page
-                return redirect(url_for("index"))
-            else:
-                return render_template("auth/login.html", error="password not matched!")
+        if user and bcrypt.check_password_hash(user.password, password):
+            user.is_authenticated = True
+            db.session.commit()
+            login_user(user)
+            return redirect("/user/dashboard")       
 
     else:
         # user authentication checked
         if current_user.is_authenticated:
-            return redirect(url_for("index"))
+            if user.role == "admin":
+                return redirect(url_for("admin.index"))
+            else:
+                return redirect(url_for("user.dashboard"))
         else:
             return render_template("auth/login.html")
 
 
 @auth.route('/logout')
 def logout():
+    current_user.active = False
+    db.session.commit()
     # log out user
     logout_user()
 

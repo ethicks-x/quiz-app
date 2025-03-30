@@ -1,0 +1,109 @@
+{% extends "user/structure.html" %}
+{% block title %}Search Page{% endblock %}
+{% block content %}
+<div class="container mt-5">
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h3 class="card-title text-center">Available Subjects</h3>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Subject Name</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if subjects|length == 0 %}
+                            <tr>
+                                <td colspan="3" class="text-center">No subjects available</td>
+                            </tr>
+                        {% endif %}
+
+                        {% for subject in subjects %}
+                            <tr>
+                                <td>{{ subject.id }}</td>
+                                <td>{{ subject.name }}</td>
+                                <td>{{ subject.description }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h3 class="card-title text-center">Available Chapters</h3>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Subject Name</th>
+                            <th>Chapter Name</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if chapters|length == 0 %}
+                            <tr>
+                                <td colspan="4" class="text-center">No chapters available</td>
+                            </tr>
+                        {% endif %}
+
+                        {% for chapter in chapters %}
+                            <tr>
+                                <td>{{ chapter.id }}</td>
+                                <td>{{ chapter.subject }}</td>
+                                <td>{{ chapter.name }}</td>
+                                <td>{{ chapter.description }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h3 class="card-title text-center">Available Quizes</h3>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Subject/Chapter</th>
+                            <th>No. of Questions</th>
+                            <th>Date</th>
+                            <th>Duration (hh:mm)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if quizes|length == 0 %}
+                            <tr>
+                                <td colspan="5" class="text-center">No quizes available</td>
+                            </tr>
+                        {% endif %}
+
+                        {% for quiz in quizes %}
+                            <tr>
+                                <td>{{ quiz.id }}</td>
+                                <td>{{ quiz.subject }}/{{ quiz.chapter }}</td>
+                                <td>{{ quiz.num_questions }}</td>
+                                <td>{{ quiz.date_of_quiz.strftime('%d/%m/%Y') }}</td>
+                                <td>{{ quiz.time_duration }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

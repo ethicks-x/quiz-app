@@ -1,0 +1,83 @@
+{% extends "admin/structure.html" %}
+{% block title %}Summary Page{% endblock %}
+{% block content %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div class="d-flex flex-row flex-wrap gap-4 py-5 px-2">
+    <div class="flex-fill" style="min-width: 500px;">
+        <h2 class="text-center">Subject Wise Top Scores</h2>
+
+        <div class="w-100 d-flex justify-content-center">
+            <canvas id="topScoresChart" style="max-width: 600px; width: 100%; height: auto; aspect-ratio: 2;"></canvas>
+        </div>
+    </div>
+    
+    <div class="flex-fill" style="min-width: 500px;">
+        <h2 class="text-center">Subject Wise User Attempts</h2>
+
+        <div class="w-100 d-flex justify-content-center">
+            <canvas id="userAttemptsChart" style="max-width: 600px; width: 100%; max-height: 600px;"></canvas>
+        </div>
+    </div>
+</div>
+
+<script>
+    const raw_data = '{{ summary_data|tojson }}';
+    const summary_data = Array.from(JSON.parse(raw_data));
+    console.log(summary_data);
+
+    const colors = summary_data.map((_, index) => {
+        const r = Math.floor(Math.random() * 255);
+        const g = Math.floor(Math.random() * 255);
+        const b = Math.floor(Math.random() * 255);
+        return [r, g, b];
+    });
+    
+    /* if (window.topScoresChart && window.topScoresChart !== null) {
+        window.topScoresChart.destroy();
+    } */
+
+    window.topScoresChart = new Chart(
+        document.getElementById('topScoresChart').getContext('2d'),
+        {
+            type: 'bar',
+            data: {
+                labels: summary_data.map(data => data.subject.name),
+                datasets: [{
+                    label: 'Top Scores',
+                    data: summary_data.map(data => data.top_scores),
+                    borderWidth: 1,
+                    backgroundColor: colors.map(color => `rgb(${color[0]}, ${color[1]}, ${color[2]}, 0.2)`),
+                    borderColor: colors.map(color => `rgb(${color[0]}, ${color[1]}, ${color[2]}, 1)`),
+                }]
+            },
+            options: {
+                responsive: false
+            }
+        },
+    )
+
+    /* if (window.userAttemptsChart && window.userAttemptsChart !== null) {
+        window.userAttemptsChart.destroy();
+    } */
+
+    window.userAttemptsChart = new Chart(
+        document.getElementById('userAttemptsChart').getContext('2d'),
+        {
+            type: 'pie',
+            data: {
+                labels: summary_data.map(data => data.subject.name),
+                datasets: [{
+                    label: 'User Attempts',
+                    data: summary_data.map(data => data.user_attempts),
+                    borderWidth: 1,
+                    backgroundColor: colors.map(color => `rgb(${color[0]}, ${color[1]}, ${color[2]}, 0.2)`),
+                    borderColor: colors.map(color => `rgb(${color[0]}, ${color[1]}, ${color[2]}, 1)`),
+                }]
+            },
+            options: {
+                responsive: false
+            }
+        },
+    )
+</script>
+{% endblock %}

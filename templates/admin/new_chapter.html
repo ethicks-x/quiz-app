@@ -1,0 +1,51 @@
+{% extends "admin/structure.html" %}
+{% block title %}Create a New Subject{% endblock %}
+{% block content %}
+    <div class="d-grid h-100" style="place-items: center">
+        <div class="w-100" style="max-width: 500px">
+            {% if errors %}
+                <div class="alert alert-danger" role="alert">
+                    <ul class="m-0">
+                        {% for error in errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            <div class="w-100 bg-body-secondary px-5 py-4 rounded-3 shadow">
+                <h3 class="text-center">New Chapter</h3>
+                <form action="/admin/new-chapter/{{ subject_id }}" method="post">
+
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name:</label>
+                        <input
+                            type="text"
+                            name="name"
+                            id="name"
+                            class="form-control"
+                            required
+                        />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description:</label>
+                        <textarea
+                            name="description"
+                            id="description"
+                            class="form-control"
+                            required
+                        ></textarea>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary col-6">Save</button>
+                        <a href="/admin" class="btn btn-primary col-6">Cancel</a>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

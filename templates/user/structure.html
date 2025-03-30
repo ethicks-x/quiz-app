@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}User View{% endblock %}
+
+{% block body %}
+  <nav class="navbar navbar-expand-lg navbar-light bg-dark-subtle">
+    <div class="container-fluid">
+      <!-- Navbar links on the left -->
+      <div class="navbar-nav flex-row flex-nowrap flex-shrink-0">
+        <a class="nav-link px-2" aria-current="page" href="/user/dashboard">Home</a>
+        <span class="navbar-text">|</span>
+        <a class="nav-link px-2" href="/user/scores">Scores</a>
+        <span class="navbar-text">|</span>
+        <a class="nav-link px-2" href="/user/summary">Summary</a>
+        <span class="navbar-text">|</span>
+        <a class="nav-link px-2" href="/auth/logout">Logout</a>
+      </div>
+
+      <!-- Right-aligned elements -->
+      <div class="d-flex align-items-center">
+        <!-- Search Form -->
+        <form class="d-flex me-2" action="/user/search" method="GET">
+          <input class="form-control me-2" type="search" name="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-dark" type="submit">Search</button>
+        </form>
+
+        <!-- Welcome Message -->
+        <span class="navbar-text">Welcome {% if user %}{{ user.full_name }}{% else %}User{% endif %}</span>
+      </div>
+    </div>
+  </nav>
+  <main>
+    {% block content %}Nothing...{% endblock %}
+  </main>
+{% endblock %}

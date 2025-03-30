@@ -1,0 +1,47 @@
+{% extends "user/structure.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h3 class="card-title text-center">Upcoming Quizzes</h3>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Subject/Chapter</th>
+                                <th>No. of Questions</th>
+                                <th>Date</th>
+                                <th>Duration (hh:mm)</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if quizzes|length == 0 %}
+                                <tr>
+                                    <td colspan="5" class="text-center">No upcoming quizzes</td>
+                                </tr>
+                            {% endif %}
+                            {% for quiz in quizzes %}
+                                <tr>
+                                    <td>{{ quiz.id }}</td>
+                                    <td>{{ quiz.subject }}/{{ quiz.chapter }}</td>
+                                    <td>{{ quiz.num_questions }}</td>
+                                    <td>{{ quiz.date_of_quiz.strftime('%d/%m/%Y') }}</td>
+                                    <td>{{ quiz.time_duration }}</td>
+                                    <td>
+                                        <a href="/user/view_quiz/{{ quiz.id }}" class="btn btn-sm btn-outline-info me-1">View</a>
+                                        <a href="/user/take_quiz/{{ quiz.id }}" class="btn btn-success btn-sm">Start</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

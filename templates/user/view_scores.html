@@ -1,0 +1,42 @@
+{% extends "user/structure.html" %}
+
+{% block title %}Quiz Scores{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h3 class="card-title text-center">Quiz Scores</h3>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Subject/Chapter</th>
+                                <th>No. of Questions</th>
+                                <th>Time Stamp Of Attempt</th>
+                                <th>Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if scores|length == 0 %}
+                                <tr>
+                                    <td colspan="5" class="text-center">No upcoming scores</td>
+                                </tr>
+                            {% endif %}
+                            {% for score in scores %}
+                                <tr>
+                                    <td>{{ score.id }}</td>
+                                    <td>{{ score.subject }}/{{ score.chapter }}</td>
+                                    <td>{{ score.num_questions }}</td>
+                                    <td>{{ score.time_stamp_of_attempt.strftime('%d/%m/%Y - %I:%M:%S %p') }}</td>
+                                    <td>{{ score.total_scored }}/{{ score.num_questions }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

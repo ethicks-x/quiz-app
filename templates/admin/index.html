@@ -1,0 +1,63 @@
+{% extends "admin/structure.html" %}
+{% block title %}Admin View{% endblock %}
+{% block content %}
+    <div class="my-4 px-4">
+        <!-- <div class="d-flex flex-column flex-lg-row flex-wrap gap-4"> -->
+        <div class="d-grid gap-4" style="grid-template-columns: repeat(auto-fill, minmax(500px, 1fr)); grid-template-rows: masonry;">
+
+            {% if data|length == 0 %}
+                <div class="alert alert-warning" role="alert">
+                    No Subjects Found
+                </div>
+            {% endif %}
+
+            {% for subject in data %}
+                <div class="width-100">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ subject.name }}</h5>
+                            <p class="card-text">{{ subject.description }}</p>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead class="table-primary">
+                                        <tr>
+                                            <th>Chapter Name</th>
+                                            <th>No. of Quizes</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% if subject.chapters|length == 0 %}
+                                            <tr>
+                                                <td colspan="3" class="text-center">No Chapters Found</td>
+                                            </tr>
+                                        {% endif %}
+
+                                        {% for chapter in subject.chapters %}
+                                            <tr>
+                                                <td>{{ chapter.name }}</td>
+                                                <td>{{ chapter.no_of_quizzes }}</td>
+                                                <td>
+                                                    <a href="/admin/quizes/{{ chapter.id }}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                                    <a href="/admin/delete-chapter/{{ chapter.id }}" class="btn btn-sm btn-outline-danger">Delete</a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <a href="/admin/new-chapter/{{ subject.id }}" class="btn btn-sm btn-success">+ Chapter</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+
+        <!-- Add Subject Button -->
+        <div class="d-flex justify-content-center mt-4">
+            <a href="/admin/new-subject" class="btn btn-lg btn-primary">+ Subject</a>
+        </div>
+    </div>
+{% endblock %}

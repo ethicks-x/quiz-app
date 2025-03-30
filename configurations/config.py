@@ -12,6 +12,8 @@ class Config():
     SQLALCHEMY_DATABASE_URI = None
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     BCRYPT = bcrypt
+    SESSION_PERMANENT = False
+    SESSION_TYPE = "filesystem"
 
 
 class LocalDevConfig(Config):

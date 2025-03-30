@@ -1,0 +1,86 @@
+{% extends "user/structure.html" %}
+{% block title %}Summary Page{% endblock %}
+{% block content %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div class="d-flex flex-row flex-wrap gap-4 py-5 px-2">
+    <div class="flex-fill" style="min-width: 500px;">
+        <h2 class="text-center">Subject Wise no. of Quizes</h2>
+
+        <div class="w-100 d-flex justify-content-center">
+            <canvas id="subjects" style="max-width: 600px; width: 100%; height: auto; aspect-ratio: 2;"></canvas>
+        </div>
+    </div>
+    
+    <div class="flex-fill" style="min-width: 500px;">
+        <h2 class="text-center">Month Wise no. of Quizes</h2>
+
+        <div class="w-100 d-flex justify-content-center">
+            <canvas id="months" style="max-width: 600px; width: 100%; max-height: 600px;"></canvas>
+        </div>
+    </div>
+</div>
+
+<script>
+    const raw_data = '{{ subjects|tojson }}';
+    const subjects = Array.from(JSON.parse(raw_data));
+    console.log(subjects);
+
+    const colors = subjects.map((_, index) => {
+        const r = Math.floor(Math.random() * 255);
+        const g = Math.floor(Math.random() * 255);
+        const b = Math.floor(Math.random() * 255);
+        return [r, g, b];
+    });
+    
+    const subjectsChart = new Chart(
+        document.getElementById('subjects'),
+        {
+            type: 'bar',
+            data: {
+                labels: subjects.map(data => data.subject),
+                datasets: [{
+                    label: 'Subjects wise Quizzes',
+                    data: subjects.map(data => data.quizzes_taken),
+                    borderWidth: 1,
+                    backgroundColor: colors.map(color => `rgb(${color[0]}, ${color[1]}, ${color[2]}, 0.2)`),
+                    borderColor: colors.map(color => `rgb(${color[0]}, ${color[1]}, ${color[2]}, 1)`),
+                }]
+            },
+            options: {
+                responsive: false
+            }
+        },
+    )
+
+    const monthsRaw_data = '{{ months|tojson }}';
+    const months = JSON.parse(monthsRaw_data);
+    console.log(months);
+
+    const monthsColors = Object.keys(months).map((_, index) => {
+        const r = Math.floor(Math.random() * 255);
+        const g = Math.floor(Math.random() * 255);
+        const b = Math.floor(Math.random() * 255);
+        return [r, g, b];
+    });
+
+    const monthsChart = new Chart(
+        document.getElementById('months'),
+        {
+            type: 'pie',
+            data: {
+                labels: Object.keys(months),
+                datasets: [{
+                    label: 'Month Wise Quizes',
+                    data: Object.values(months),
+                    borderWidth: 1,
+                    backgroundColor: monthsColors.map(color => `rgb(${color[0]}, ${color[1]}, ${color[2]}, 0.2)`),
+                    borderColor: monthsColors.map(color => `rgb(${color[0]}, ${color[1]}, ${color[2]}, 1)`),
+                }]
+            },
+            options: {
+                responsive: false
+            }
+        }
+    )
+</script>
+{% endblock %}

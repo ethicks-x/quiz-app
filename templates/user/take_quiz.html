@@ -1,0 +1,224 @@
+{% extends "user/structure.html" %}
+
+{% block title %}Quiz{% endblock %}
+
+{% block content %}
+    <style>
+        body {
+            background-color: #f8f9fa; /* Light gray background */
+        }
+
+        .quiz-container {
+            max-width: 800px; /* Increased width for better layout */
+            margin: 30px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-box {
+            border: 2px solid #007bff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .option {
+            margin-bottom: 10px;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .question-number {
+            background-color: #dff0d8; /* Light green for question number */
+            color: #3c763d; /* Dark green text */
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .timer {
+            background-color: #e1f5fe; /* Light blue */
+            color: #0d47a1; /* Dark blue text */
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            float: right;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background-color: #5bc0de; /* Light blue button color */
+            border-color: #46b8da;
+        }
+
+        .btn-primary:hover {
+            background-color: #31b0d5;
+            border-color: #269abc;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px; /* Adds space between title and content */
+        }
+    </style>
+
+    <div class="container quiz-container">
+        <h2>Start the Quiz</h2>
+        <div class="quiz-header">
+            <div>
+                QNo. <span class="question-number" id="question-number">3/15</span>
+            </div>
+            <div class="timer" id="timer">
+                {{ quiz.time_duration }}:00
+            </div>
+        </div>
+
+        <div class="question-box" id="question-box">
+            <p>.....Question Statement.....</p>
+        </div>
+
+        <div id="options">
+            <div class="option">
+                <label>
+                    <input type="radio" name="answer" value="0">
+                    1) Option....
+                </label>
+            </div>
+
+            <div class="option">
+                <label>
+                    <input type="radio" name="answer" value="1">
+                    2) Option....
+                </label>
+            </div>
+
+            <div class="option">
+                <label>
+                    <input type="radio" name="answer" value="2">
+                    3) Option....
+                </label>
+            </div>
+
+            <div class="option">
+                <label>
+                    <input type="radio" name="answer" value="3">
+                    4) Option....
+                </label>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <button type="button" id="next" class="btn btn-primary">Save and Next</button>
+            <button type="submit" id="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </div>
+
+    <script>
+        // Get the necessary elements
+        const nextButton = document.getElementById('next');
+        const submitButton = document.getElementById('submit');
+        const questionBox = document.getElementById('question-box');
+        const options = document.getElementsByClassName('option');
+        const questionNumber = document.getElementById('question-number');
+        const timer = document.getElementById('timer');
+
+        const questions = JSON.parse(JSON.stringify({{ questions|tojson|safe }}));
+        console.log(questions);
+
+        let currentQuestion = 0; // Zero-based index of the current question
+        let answers = {}; // Array to store the answers
+
+        for (let i = 0; i < questions.length; i++) {
+            answers[questions[i].id] = -1;
+        }
+
+        // Function to load the next question
+        function loadQuestion(index) {
+            questionBox.innerHTML = `<p>${questions[index].question_statement}</p>`;
+            questionNumber.innerHTML = `${index + 1}/${questions.length}`;
+
+            for (let i = 0; i < options.length; i++) {
+                options[i].innerHTML = `
+                    <label>
+                        <input type="radio" name="answer" value="${i}">
+                        ${i + 1}) ${questions[index][`option${i + 1}`]}
+                    </label>
+                `;
+            }
+        }
+
+        // Load the first question
+        loadQuestion(currentQuestion);
+
+        // Event listener for the next button
+        nextButton.addEventListener('click', () => {
+            const selectedOption = document.querySelector('input[name="answer"]:checked');
+
+            answers[questions[currentQuestion].id] = parseInt(selectedOption?.value || "-1");
+            currentQuestion++;
+
+            if (currentQuestion < questions.length) {
+                loadQuestion(currentQuestion);
+            } else {
+                alert('You have reached the end of the quiz!');
+                submitButton.click();
+            }
+        });
+
+        // Event listener for the submit button
+        submitButton.addEventListener('click', () => {
+            // Send the answers to the server
+            fetch('/take_quiz/{{ quiz.id }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    'answers': answers
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Quiz submitted successfully!');
+                        window.location.href = '/dashboard';
+                    } else {
+                        alert('Failed to submit quiz!');
+                    }
+                });
+        });
+
+        // Start the timer in reverse
+        const time_duration = "{{ quiz.time_duration }}"; // 'hh:mm' format
+        const timeArray = time_duration.split(':');
+        let timeLeft = parseInt(timeArray[0]) * 3600 + parseInt(timeArray[1]) * 60;
+        setInterval(() => {
+            const hours = Math.floor(timeLeft / 3600);
+            const minutes = Math.floor((timeLeft % 3600) / 60);
+            const seconds = timeLeft % 60;
+
+            timer.innerHTML = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+            timeLeft--;
+
+            if (timeLeft < 0) {
+                alert('Time is up!');
+                submitButton.click();
+            }
+        }, 1000);
+    </script>
+
+{% endblock %}

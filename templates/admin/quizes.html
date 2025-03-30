@@ -1,0 +1,64 @@
+{% extends "admin/structure.html" %}
+{% block title %}Quizes Page{% endblock %}
+{% block content %}
+    <div class="my-4 px-4">
+        <!-- <div class="d-flex flex-wrap flex-column flex-lg-row gap-4"> -->
+        <div class="d-grid gap-4" style="grid-template-columns: repeat(auto-fill, minmax(500px, 1fr)); grid-template-rows: masonry;">
+
+            {% if quizzes|length == 0 %}
+                <div class="alert alert-warning w-100" role="alert">
+                    No Quizes Found
+                </div>
+            {% endif %}
+
+            {% for quiz in quizzes %}
+                <div class="w-100">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Quiz {{ quiz.id }} ({{ quiz.chapter.name }})</h5>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead class="table-primary">
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Question Statement</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% if quiz.questions|length == 0 %}
+                                            <tr>
+                                                <td colspan="3" class="text-center">No Chapters Found</td>
+                                            </tr>
+                                        {% endif %}
+
+                                        {% for question in quiz.questions %}
+                                            <tr>
+                                                <td>{{ question.id }}</td>
+                                                <td>{{ question.question_statement }}</td>
+                                                <td class="d-flex gap-2">
+                                                    <a href="/admin/edit-question/{{ question.id }}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                                    <a href="/admin/delete-question/{{ question.id }}" class="btn btn-sm btn-outline-danger">Delete</a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <a href="/admin/new-question/{{ quiz.id }}" class="btn btn-sm btn-success">+ Question</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+
+        {% if not all %}
+            <!-- Add Quiz Button -->
+            <div class="d-flex justify-content-center mt-4">
+                <a href="/admin/new-quiz/{{ chapter.id }}" class="btn btn-lg btn-primary">+ Quiz</a>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

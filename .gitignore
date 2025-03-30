@@ -178,4 +178,4 @@ cython_debug/
 
 # Databases
 database_dir/
-*.db
+database.db
