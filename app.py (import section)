@@ -1,4 +1,0 @@
-from routes import auth, admin, user, admin_extensions
-app.register_blueprint(user.user_bp)
-app.register_blueprint(admin.admin_bp)
-app.register_blueprint(auth.auth)

@@ -89,7 +89,7 @@ def new_subject():
         db.session.add(subject)
         db.session.commit()
 
-        return redirect(url_for('admin.index'))
+        return redirect(url_for('admin.dashboard'))
 
     return render_template('admin/new_subject.html', user=current_user)
 
@@ -111,7 +111,7 @@ def new_chapter(subject_id):
         db.session.add(chapter)
         db.session.commit()
 
-        return redirect(url_for('admin.index'))
+        return redirect(url_for('admin.dashboard'))
 
     return render_template('admin/new_chapter.html', user=current_user, subject_id=subject_id)
 

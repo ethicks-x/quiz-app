@@ -58,6 +58,12 @@ class Question(db.Model):
     option3 = db.Column(db.String, nullable=False)
     option4 = db.Column(db.String, nullable=False)
 
+    def __repr__(self):
+        return f"<Question(question_statement='{self.question_statement}')>"
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
 
 class Score(db.Model):
 
