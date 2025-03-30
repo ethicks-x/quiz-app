@@ -1,7 +1,196 @@
+:root {
+  --primary-color: #4361ee;
+  --primary-light: #4895ef;
+  --secondary-color: #3f37c9;
+  --accent-color: #4cc9f0;
+  --success-color: #4caf50;
+  --info-color: #2196f3;
+  --warning-color: #ff9800;
+  --danger-color: #f44336;
+  --dark-color: #212529;
+  --light-color: #f8f9fa;
+  --gray-100: #f8f9fa;
+  --gray-200: #e9ecef;
+  --gray-300: #dee2e6;
+  --gray-400: #ced4da;
+  --gray-500: #adb5bd;
+  --gray-600: #6c757d;
+  --gray-700: #495057;
+  --gray-800: #343a40;
+  --gray-900: #212529;
+  --border-radius: 0.375rem;
+  --box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+  --transition: all 0.3s ease;
+}
+
 *,
 *::after,
 *::before {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+  color: var(--gray-800);
+  background-color: var(--gray-100);
+}
+
+.navbar {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  padding: 1rem;
+}
+
+.navbar-light {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-light)) !important;
+}
+
+.navbar-light .nav-link,
+.navbar-light .navbar-text {
+  color: white !important;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.navbar-light .nav-link:hover {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.card {
+  border: none;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  transition: var(--transition);
+  margin-bottom: 1.5rem;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+.form-control {
+  border-radius: var(--border-radius);
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--gray-300);
+  transition: var(--transition);
+}
+
+.form-control:focus {
+  box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
+  border-color: var(--primary-light);
+}
+
+.btn {
+  border-radius: var(--border-radius);
+  padding: 0.5rem 1.25rem;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.btn-primary {
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+}
+
+.btn-primary:hover {
+  background-color: var(--secondary-color) !important;
+  border-color: var(--secondary-color) !important;
+}
+
+.btn-success {
+  background-color: var(--success-color) !important;
+  border-color: var(--success-color) !important;
+}
+
+.btn-outline-dark {
+  color: white !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.btn-outline-dark:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+}
+
+.table th {
+  font-weight: 600;
+}
+
+.table-bordered {
+  border: none;
+}
+
+.table-bordered th,
+.table-bordered td {
+  border: 1px solid var(--gray-200);
+}
+
+.table-light thead {
+  background-color: var(--gray-200);
+}
+
+.alert {
+  border-radius: var(--border-radius);
+  border: none;
+}
+
+.bg-body-secondary {
+  background-color: white !important;
+}
+
+.container.quiz-container {
+  background-color: white;
+  box-shadow: var(--box-shadow);
+  border-radius: var(--border-radius);
+}
+
+.question-box {
+  border: 2px solid var(--primary-light) !important;
+  border-radius: var(--border-radius);
+  padding: 20px;
+  background-color: rgba(67, 97, 238, 0.02);
+}
+
+.question-number {
+  background-color: var(--accent-color) !important;
+  color: white !important;
+}
+
+.timer {
+  background-color: var(--primary-color) !important;
+  color: white !important;
+}
+
+/* Improve table spacing */
+.table th, .table td {
+  padding: 0.75rem 1rem;
+  vertical-align: middle;
+}
+
+/* Add subtle animation for quiz options */
+.option {
+  transition: var(--transition);
+  padding: 0.5rem;
+  border-radius: var(--border-radius);
+}
+
+.option:hover {
+  background-color: var(--gray-100);
 }

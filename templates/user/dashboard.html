@@ -3,7 +3,8 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
-    <div class="container mt-5">
+    <div class="container mt-3">
+        <h2 class="fw-bold mb-4">Your Dashboard</h2>
         <div class="card shadow-sm">
             <div class="card-body">
                 <h3 class="card-title text-center">Upcoming Quizzes</h3>
@@ -22,7 +23,7 @@
                         <tbody>
                             {% if quizzes|length == 0 %}
                                 <tr>
-                                    <td colspan="5" class="text-center">No upcoming quizzes</td>
+                                    <td colspan="6" class="text-center py-3">No upcoming quizzes</td>
                                 </tr>
                             {% endif %}
                             {% for quiz in quizzes %}
@@ -33,8 +34,10 @@
                                     <td>{{ quiz.date_of_quiz.strftime('%d/%m/%Y') }}</td>
                                     <td>{{ quiz.time_duration }}</td>
                                     <td>
-                                        <a href="/user/view_quiz/{{ quiz.id }}" class="btn btn-sm btn-outline-info me-1">View</a>
-                                        <a href="/user/take_quiz/{{ quiz.id }}" class="btn btn-success btn-sm">Start</a>
+                                        <div class="d-flex gap-2">
+                                            <a href="/user/view_quiz/{{ quiz.id }}" class="btn btn-sm btn-outline-info">View</a>
+                                            <a href="/user/take_quiz/{{ quiz.id }}" class="btn btn-sm btn-success">Start</a>
+                                        </div>
                                     </td>
                                 </tr>
                             {% endfor %}
